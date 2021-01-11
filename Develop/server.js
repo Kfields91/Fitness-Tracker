@@ -22,6 +22,8 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/fitness", {
   useCreateIndex: true,
 });
 
+// testing token authenification 
+
 // Handle API routes HERE
 
 app.listen(PORT, () => {
