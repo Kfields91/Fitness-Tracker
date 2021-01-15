@@ -4,8 +4,6 @@ const mongoose = require("mongoose");
 
 const PORT = process.env.PORT || 3000;
 
-const db = require("./models");
-
 const app = express();
 
 app.use(logger("dev"));
@@ -14,6 +12,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(express.static("public"));
+app.use(require("./routes/apiRoutes.js"));
+require("./routes/htmlRoutes")(app);
 
 // remember to change the url/localhost/whateverdatabaseICreate
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/fitness", {
@@ -21,8 +21,6 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/fitness", {
   useUnifiedTopology: true,
   useCreateIndex: true,
 });
-
-// testing token authenification 
 
 // Handle API routes HERE
 
