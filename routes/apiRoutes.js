@@ -1,50 +1,68 @@
-// var router = require("express").Router();
-
-var db = require("../models/workoutModel");
-const router = require("./htmlRoutes");
-
-// need help with routes
+const router = require("express").Router();
+var Workout = require("../models/workoutModel");
 
 router.get("/api/workouts", (req, res) => {
   console.log("I am a GET route for /workout");
-  // db.Workout.find({}).then(function (workout) {
-  //   res.json(workout);
-  // });
+  Workout.find({})
+    .then((dbWorkout) => {
+      res.json(dbWorkout);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
 });
 
-router.get("api/workouts/:id"),
+router.get("/api/workouts/:id"),
   (req, res) => {
     console.log("This is a GET Routes for workout/:id");
-    // db.Workout.find({})(
-    //   { _id: req.params.id },
-    //   { lastWorkout: req.body.lastWorkout }
-    // ).then(function (workout) {
-    //   res.json(workout);
-    // });
+    Workout.find({})(
+      { _id: req.params.id },
+      { lastWorkout: req.body.lastWorkout }
+    ).then(function (workout) {
+      res.json(workout);
+    });
   };
-// May not be a put need help with this route
-router.put("api/workouts/:id", function (req, res) {
+
+// need help with put route
+router.put("/api/workouts/:id", (req, res) => {
   console.log("POST api/workout/:id route");
-  // db.Workout.updateOne(
-  //   { _id: req.params.id },
-  //   { exercise: req.body.exercise }
-  // ).then(function (workout) {
-  //   res.json(workout);
-  // });
+  Workout.findOneAndUpdate(
+    { _id: req.params.id },
+    { $push: { exercises: req.body } },
+    { new: true }
+  )
+    .then((dbWorkout) => {
+      res.json(dbWorkout);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
 });
 
-router.post("/api/workouts", function (req, res) {
+// body is undefined
+router.post("/api/workouts", function ({ body }, res) {
   console.log("I'm a POST route for workouts");
-  db.Workout.updateOne({}).then(function (workout) {
-    res.json(workout);
-  });
+  Workout.create(body)
+    .then(function (dbWorkout) {
+      res.json(dbWorkout);
+      console.log(dbWorkout);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
 });
 
 router.get("/api/workouts/range", function (req, res) {
   console.log("I'm a GET route for workouts/range");
-  // db.find({ range: req.params.range }).then(function (workout) {
-  //   res.json(workout);
-  // });
+  Workout.aggregate([
+    {
+      $addFields: {
+        totalDuration: { $sum: exercise.duration },
+      },
+    },
+  ]).then(function (dbWorkout) {
+    res.json(dbWorkout);
+  });
 });
 
 module.exports = router;
