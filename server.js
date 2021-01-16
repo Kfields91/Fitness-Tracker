@@ -16,7 +16,7 @@ app.use(require("./routes/apiRoutes.js"));
 require("./routes/htmlRoutes")(app);
 
 // remember to change the url/localhost/whateverdatabaseICreate
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/fitness", {
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workouts", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
