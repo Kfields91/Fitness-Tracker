@@ -4,7 +4,7 @@ let mongoose = require("mongoose");
 // Need to write js file(s) for models
 let db = require("../models");
 
-mongoose.connect("mongodb://localhost/workout", {
+mongoose.connect("mongodb://localhost/workouts", {
   useNewUrlParser: true,
   useFindAndModify: false,
 });
